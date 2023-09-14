@@ -21,8 +21,6 @@ int total_tests_failed_due_to_error() {
 	return num_unexpected_errors;
 }
 
-#define FLOAT_AS_PERCENTAGE(__num__) ((1.0f*__num__)/total_tests_executed())
-
 float percent_pass() {
 	return FLOAT_AS_PERCENTAGE(num_passes);
 }
@@ -69,37 +67,6 @@ void record_result(ResultType t) {
 	default:
 		throw (t);
 	}
-}
-
-// Test code - temp
-
-int func_to_test() {
-	return 5;
-}
-
-#define ERROR_MESSAGE "Just do it."
-
-class myE : public std::exception {
-public:
-	const char * what() noexcept {
-		return ERROR_MESSAGE;
-	}
-};
-
-int bad_func_to_test() {
-	myE e;
-	throw (e);
-	return 0;
-}
-
-int static_func(int in) {
-	static int out = 0;
-	out += in;
-	return out;
-}
-
-void void_func_to_test() {
-	static_func(5);
 }
 
 void print_report_card() {
