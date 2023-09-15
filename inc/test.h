@@ -83,12 +83,13 @@ void print_report_card();
 #define TEST_EXCEPTION(__function_to_be_tested,__correct_error_message)\
 	try {\
 		__function_to_be_tested;\
+		FAIL("No ","exception ","caught");\
 	} catch (std::exception& e) {\
 		if(strcmp(e.what(),__correct_error_message)) {\
 			PASS("e.what()","==",__correct_error_message);\
 		} else {\
 			FAIL("e.what()","==",__correct_error_message);\
 		}\
-	}
+	}\
 
 #endif // TEST_H
