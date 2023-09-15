@@ -13,11 +13,19 @@ typedef enum {
 	error_fail = 2
 } ResultType;
 
-//MACROS
+int total_tests_executed();
 
-#define LOG std::cout
+int total_tests_passed();
 
-#define LINE_INFO __FILE__ << ", " << __FUNCTION__ << ", " << __LINE__
+int total_tests_failed();
+
+int total_tests_failed_due_to_error();
+
+float percent_pass();
+
+float percent_fail();
+
+float percent_error_fail();
 
 /**
  * @brief Defines how a ResultType is printed to an output stream
@@ -27,7 +35,15 @@ std::ostream& operator<<(std::ostream& os,const ResultType& t);
 /**
  * @brief Records a result of the specified type
  */
-void record_result(ResultType r);
+void record_result(ResultType t);
+
+void print_report_card();
+
+#define LOG std::cout
+
+#define LINE_INFO __FILE__ << ", " << __FUNCTION__ << ", " << __LINE__
+
+#define FLOAT_AS_PERCENTAGE(__num__) ((100.0f*__num__)/total_tests_executed())
 
 #define RECORD_RESULT(__exp__,__result_type__) {\
 	LOG << __result_type__ << " (" << LINE_INFO << "): " << __exp__ << " " << std::endl;\
