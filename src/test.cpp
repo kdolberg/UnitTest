@@ -1,10 +1,22 @@
 #include <assert.h>
 #include "test.h"
 
+/**
+ * @brief The number of tests executed that have passed
+ */
 static int num_passes=0;
+/**
+ * @brief The number of tests executed that have failed
+ */
 static int num_fails=0;
+/**
+ * @brief The number of tests executed that have failed as a result of throwing an unexpected error
+ */
 static int num_unexpected_errors=0;
 
+/**
+ * @brief Returns the total number of tests that have been executed
+ */
 int total_tests_executed() {
 	return num_passes+num_fails;
 }
