@@ -6,6 +6,8 @@
 #include <exception>
 #include <stdbool.h>
 
+#define PRINT_ON_FAILURE
+
 typedef enum {
 	not_executed = -1,
 	fail = 0,
@@ -50,11 +52,19 @@ void print_report_card();
 	record_result(__result_type__);\
 }
 
+#define PRINT_VAR(__var__) LOG << #__var__ << ":\n" << __var__ << std::endl;
+
 #define PASS(__arg1__,__op__,__arg2__) RECORD_RESULT(__arg1__ __op__ __arg2__,pass)
 
 #define FAIL(__arg1__,__op__,__arg2__) RECORD_RESULT(__arg1__ __op__ __arg2__,fail)
 
 #define ERROR_FAIL(__arg1__,__op__,__arg2__) RECORD_RESULT(__arg1__ __op__ __arg2__,error_fail);
+
+#ifdef PRINT_ON_FAILURE
+#define PRINT_FAILURE(__arg1__,__arg2__) PRINT_VAR(__arg1__); PRINT_VAR(__arg2__);
+#else 
+#define PRINT_FAILURE(__arg1__,__arg2__)
+#endif
 
 /**
  * @brief Creates a test and documents the result. Prints results. Provides useful debugging info if it fails.
@@ -65,6 +75,7 @@ void print_report_card();
 			PASS(#__arg1__,#__op__,#__arg2__);\
 		} else {\
 			FAIL(#__arg1__,#__op__,#__arg2__);\
+			PRINT_FAILURE(__arg1__,__arg2__);\
 		}\
 	} catch (...) {\
 		ERROR_FAIL(#__arg1__,#__op__,#__arg2__);\
