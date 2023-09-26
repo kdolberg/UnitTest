@@ -58,7 +58,7 @@ void print_report_card();
 
 #define FAIL(__arg1__,__op__,__arg2__) RECORD_RESULT(__arg1__ __op__ __arg2__,fail)
 
-#define ERROR_FAIL(__arg1__,__op__,__arg2__) RECORD_RESULT(__arg1__ __op__ __arg2__,error_fail);
+#define ERROR_FAIL(__arg1__,__op__,__arg2__,__what__) RECORD_RESULT(__arg1__ __op__ __arg2__,error_fail); LOG << __what__ << std::endl;
 
 #ifdef PRINT_ON_FAILURE
 #define PRINT_FAILURE(__arg1__,__arg2__) PRINT_VAR(__arg1__); PRINT_VAR(__arg2__);
@@ -69,7 +69,7 @@ void print_report_card();
 /**
  * @brief Creates a test and documents the result. Prints results. Provides useful debugging info if it fails.
  */
-#define EXPECT(__arg1__,__op__,__arg2__)\
+#define __EXPECT__(__arg1__,__op__,__arg2__)\
 	try {\
 		if (__arg1__ __op__ __arg2__) {\
 			PASS(#__arg1__,#__op__,#__arg2__);\
@@ -77,11 +77,13 @@ void print_report_card();
 			FAIL(#__arg1__,#__op__,#__arg2__);\
 			PRINT_FAILURE(__arg1__,__arg2__);\
 		}\
-	} catch (...) {\
-		ERROR_FAIL(#__arg1__,#__op__,#__arg2__);\
+	} catch (std::exception& __EEEE__) {\
+		ERROR_FAIL(#__arg1__,#__op__,#__arg2__,__EEEE__.what());\
 	}
 
-#define TEST_RETURN_FUNC(__function_to_be_tested,__op__,__correct_output) EXPECT(__function_to_be_tested,__op__,__correct_output);
+#define EXPECT(__arg1__,__arg2__) __EXPECT__(__arg1__,==,__arg2__)
+
+#define TEST_RETURN_FUNC(__function_to_be_tested,__op__,__correct_output) __EXPECT__(__function_to_be_tested,__op__,__correct_output);
 
 #define TEST_VOID_FUNC(__function_to_be_tested,__output_to_be_tested,__op__,__correct_output)\
 	try {\
@@ -89,7 +91,7 @@ void print_report_card();
 	} catch (...) {\
 		ERROR_FAIL(#__output_to_be_tested,#__op__,#__correct_output);\
 	}\
-	EXPECT(__output_to_be_tested,__op__,__correct_output);
+	__EXPECT__(__output_to_be_tested,__op__,__correct_output);
 
 #define TEST_EXCEPTION(__function_to_be_tested,__correct_error_message)\
 	try {\

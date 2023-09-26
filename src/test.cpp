@@ -121,7 +121,15 @@ std::string letter_grade(float score) {
 }
 
 std::string letter_grade() {
-	return letter_grade(percent_pass()*0.01f);
+	if (total_tests_executed() > 0) {
+		if (total_tests_passed() > 0) {
+			return letter_grade((1.0f*total_tests_passed())/(1.0f*total_tests_executed()));
+		} else {
+			return "F";
+		}
+	} else {
+		return "No tests :(";
+	}
 }
 
 void test_letter_grade() {
